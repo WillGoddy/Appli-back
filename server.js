@@ -8,18 +8,21 @@ dotenv.config();
 
 const app = express();
 
-// CORS sécurisé
 const allowedOrigins = [process.env.FRONTEND_URL];
+
 
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
+      callback(null, true);
+    } else {
+      console.error(`❌ CORS bloqué pour l'origine : ${origin}`);
+      callback(new Error('Not allowed by CORS'));
     }
-    return callback(new Error('Not allowed by CORS'));
   },
   credentials: true
 }));
+
 
 app.use(express.json());
 
