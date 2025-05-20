@@ -12,23 +12,14 @@ const allowedOrigins = [process.env.FRONTEND_URL];
 
 app.use(cors({
   origin: function (origin, callback) {
-    
     if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
     }
-    return callback(new Error('Not allowed by CORS'));
   },
   credentials: true
 }));
-
-app.use((req, res, next) => {
-  res.header ("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
-  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
-  res.header("Access-Control-Allow-Credentials", "true");
-  next();
-});
-
 
 app.use(express.json());
 
