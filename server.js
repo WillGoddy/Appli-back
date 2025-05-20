@@ -8,20 +8,22 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = [process.env.FRONTEND_URL];
-
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:3000' 
+];
 
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.error(`❌ CORS bloqué pour l'origine : ${origin}`);
-      callback(new Error('Not allowed by CORS'));
+      return callback(null, true);
     }
+    return callback(new Error('Not allowed by CORS'));
   },
   credentials: true
 }));
+
+
 
 
 app.use(express.json());
