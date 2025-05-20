@@ -8,13 +8,11 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  'http://localhost:3000' 
-];
+const allowedOrigins = [process.env.FRONTEND_URL];
 
 app.use(cors({
   origin: function (origin, callback) {
+    
     if (!origin || allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
@@ -23,7 +21,13 @@ app.use(cors({
   credentials: true
 }));
 
-
+app.use((req, res, next) => {
+  res.header ("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
 
 
 app.use(express.json());
